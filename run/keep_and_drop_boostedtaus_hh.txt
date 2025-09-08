@@ -1,0 +1,47 @@
+# PFCands
+dropmatch n?PFCands_.+
+
+# objects
+dropmatch n?BeamSpot_.+
+dropmatch n?CaloMET_.+
+dropmatch n?FiducialMET_.+
+dropmatch n?FsrPhoton_.+
+dropmatch n?Proton_.+
+dropmatch n?LowPtElectron_.+
+dropmatch n?ScoutingCaloMuonOutput_.+
+dropmatch n?ScoutingPFOutput_.+
+dropmatch n?SoftActivity.+
+dropmatch n?IsoTrack_.+
+
+# HLT
+drop HLT*
+keep HLT_AK4PF*
+keep HLT_AK8PF*
+keep HLT_Iso*Mu24
+keep HLT_IsoMu27
+keep HLT_*Mu50
+keep HLT_*Mu100
+keep HLT_Ele27_WPTight_Gsf
+keep HLT_Ele32_WPTight_Gsf
+keep HLT_Ele32_WPTight_Gsf_L1DoubleEG
+keep HLT_Ele35_WPTight_Gsf
+keep HLT_Ele115_CaloIdVT_GsfTrkIdT
+keep HLT_Photon175
+keep HLT_Photon200
+keep HLT_PFJet* 
+keep HLT_PFHT*
+keep HLT_*PFTau*
+keep HLT_*MET*
+
+# L1/TrigObj
+dropmatch n?L1_.+
+dropmatch n?TrigObj_.+
+
+# GEN
+dropmatch n?GenDressedLepton_.+
+dropmatch n?GenIsolatedLepton_.+
+dropmatch n?LHE_.+
+dropmatch n?Generator_.+
+dropmatch n?LHEReweightingWeight
+dropmatch n?HTXS_.+
+dropmatch n?GenIsolatedPhoton_.+
