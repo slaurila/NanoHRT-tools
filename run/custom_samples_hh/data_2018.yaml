@@ -1,0 +1,11 @@
+egamma:
+ - EGamma
+
+jetht:
+ - JetHT
+
+singlemuon:
+ - SingleMuon
+
+tau:
+ - Tau
