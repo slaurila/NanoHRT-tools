@@ -1,19 +1,19 @@
-# NanoHRT-tools
+# Boosted HHbbtautau skims with NanoHRT-tools
 
 ### Set up CMSSW and offcial NanoAOD-tools
 
 ```bash
-cmsrel CMSSW_11_1_0_pre5_PY3
-cd CMSSW_11_1_0_pre5_PY3/src
+cmsrel CMSSW_15_0_13
+cd CMSSW_15_0_13/src
 cmsenv
 
-git clone https://github.com/cms-nanoAOD/nanoAOD-tools.git PhysicsTools/NanoAODTools
+git cms-addpkg PhysicsTools/NanoAODTools
 ```
 
-### Get customized NanoAOD tools for HeavyResTagging (NanoHRT-tools)
+### Get customized NanoAOD tools for HeavyResTagging (NanoHRT-tools), and pick the right branch for HH analysis
 
 ```bash
-git clone https://github.com/hqucms/NanoHRT-tools.git PhysicsTools/NanoHRTTools -b dev/UL
+git clone https://github.com/slaurila/NanoHRT-tools.git PhysicsTools/NanoHRTTools -b dev/hhbbtautau
 ```
 
 ### Compile
@@ -21,6 +21,34 @@ git clone https://github.com/hqucms/NanoHRT-tools.git PhysicsTools/NanoHRTTools 
 ```bash
 scram b -j8
 ```
+
+### Skim
+
+```bash
+cd PhysicsTools/NanoHRTTools/run
+```
+
+Use this command to submit the skimming jobs to condor:
+
+```bash
+python3 runPostProcessing.py -i [input-data-or-mc-dir-with-nanoaods] --cut [cutstring] -o [output-dir-on-eos] --json [lumi-json] -n [number-of-jobs] --bi [keep-and-drop-input-branch-list] --bo [keep-and-drop-output-branch-list] -d [yaml-file-with-input-sample-list] -j [jobs-directory-name]
+```
+
+Here is one realistic example, to skim 2018 data:
+
+```bash
+python3 runPostProcessing.py -i /eos/cms/store/cmst3/group/hh/NanoAOD/20250725_v15/2018/data/ --cut '(HLT_AK8PFHT800_TrimMass50 || HLT_AK8PFJet400_TrimMass30 || HLT_AK8PFJet500 || HLT_PFJet500 || HLT_PFHT1050 || HLT_PFHT500_PFMET100_PFMHT100_IDTight || HLT_PFHT700_PFMET85_PFMHT85_IDTight || HLT_PFHT800_PFMET75_PFMHT75_IDTight || HLT_IsoMu24 || HLT_Mu50 || HLT_Ele32_WPTight_Gsf || HLT_Ele115_CaloIdVT_GsfTrkIdT  || HLT_Photon200 || HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg || HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1) && nFatJet >=2 && Sum$(FatJet_particleNet_XbbVsQCD>0.1 && FatJet_particleNetLegacy_mass>50)>0 && Sum$((FatJet_ParticleNet_raw_probHtt>0.1 || FatJet_ParticleNet_raw_probHtm>0.1 || FatJet_ParticleNet_raw_probHte>0.1) && FatJet_particleNetLegacy_mass>30)>0 && Sum$(FatJet_pt>250)>0' -o /eos/cms/store/cmst3/group/hh/NanoAODskimmed/20250908_NanoAODv15_skim_v1/data --json $CMSSW_BASE/src/PhysicsTools/NanoHRTTools/data/JSON/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt -n 40 --bi keep_and_drop_boostedtaus_hh.txt --bo keep_and_drop_boostedtaus_hh.txt -d custom_samples_hh/data_2018.yaml --condor-extras '+AccountingGroup = "group_u_CMST3.all"' -j jobs_20250908_skim_v1_data
+```
+
+One all samples are processed, you can merge them by running:
+
+```bash
+python3 runMerge.py -o /eos/cms/store/cmst3/group/hh/NanoAODskimmed/20250908_NanoAODv15_skim_v1/data -d custom_samples_hh/data_2018.yaml -j jobs_20250908_skim_v1_data
+```
+
+
+
+# Genric isntructions
 
 ### Test
 
