@@ -16,8 +16,13 @@ tar -xf CMSSW*.tar.gz --warning=no-timestamp
 #Keep track of release sandbox version
 basedir=$PWD
 rel=$(echo CMSSW_*)
-arch=$(ls $rel/.SCRAM/|grep slc) || echo "Failed to determine SL release!"
-old_release_top=$(awk -F= '/RELEASETOP/ {print $2}' $rel/.SCRAM/slc*/Environment) || echo "Failed to determine old releasetop!"
+arch=$(ls $rel/.SCRAM/ | grep el9 | head -n1)
+if [ -z "$arch" ]; then
+    echo "Failed to determine EL release!" >&2
+    exit 1
+fi
+
+old_release_top=$(awk -F= '/RELEASETOP/ {print $2}' $rel/.SCRAM/"$arch"/Environment) || echo "Failed to determine old releasetop!"
  
 # Creating new release
 # This is done so e.g CMSSW_BASE and other variables are not hardcoded to the sandbox setting paths
@@ -28,7 +33,7 @@ mkdir tmp
 cd tmp
 export SCRAM_ARCH="$arch"
 scramv1 project -f CMSSW $rel
-new_release_top=$(awk -F= '/RELEASETOP/ {print $2}' $rel/.SCRAM/slc*/Environment)
+new_release_top=$(awk -F= '/RELEASETOP/ {print $2}' $rel/.SCRAM/"$arch"/Environment)
 cd $rel
 echo ">>> preparing sandbox release $rel"
  
@@ -52,7 +57,18 @@ ls -l
 
 export MLAS_DYNAMIC_CPU_ARCH=99
 export TMPDIR=`pwd`
-python processor.py $jobid
+
+if command -v python &>/dev/null; then
+    PYTHON=python
+elif command -v python3 &>/dev/null; then
+    PYTHON=python3
+else
+    echo "Python not found!" >&2
+    exit 1
+fi
+
+$PYTHON processor.py $jobid
+
 status=$?
 
 ls -l
