@@ -69,12 +69,12 @@ python3 runMerge.py -o [output-directory] -d [sample-list-yaml] -j [job-director
 For example, for 2018 data:
 
 ```bash
-python3 runMerge.py -o /eos/cms/store/cmst3/group/hh/NanoAODskimmed/20250908_NanoAODv15_2018_skim_v2/data -d custom_samples_hh/data_2018.yaml -j jobs_20250908_skim_v1_data
+python3 runMerge.py -o /eos/cms/store/cmst3/group/hh/NanoAODskimmed/20250908_NanoAODv15_2018_skim_v2/data -d custom_samples_hh/data_2018.yaml -j jobs_20251029_2018_skim_v2_data
 ```
 
 
 
-# Genric isntructions
+# Generic isntructions
 
 ### Test
 
