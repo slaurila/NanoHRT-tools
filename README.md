@@ -34,28 +34,34 @@ Use this command to submit the skimming jobs to condor:
 python3 runPostProcessing.py -i [input-data-or-mc-dir-with-nanoaods] --cut [cutstring] -o [output-dir-on-eos] --json [lumi-json] -n [number-of-jobs] --bi [keep-and-drop-input-branch-list] --bo [keep-and-drop-output-branch-list] -d [yaml-file-with-input-sample-list] -j [jobs-directory-name]
 ```
 
-For example, to skim 2018 data:
+For example, to skim 2018 data with GloParT preselections:
 
 ```bash
-python3 runPostProcessing.py -i /eos/cms/store/cmst3/group/hh/NanoAOD/20250725_v15/2018/data/ --cut '(HLT_AK8PFHT800_TrimMass50 || HLT_AK8PFJet400_TrimMass30 || HLT_AK8PFJet500 || HLT_PFJet500 || HLT_PFHT1050 || HLT_PFHT500_PFMET100_PFMHT100_IDTight || HLT_PFHT700_PFMET85_PFMHT85_IDTight || HLT_PFHT800_PFMET75_PFMHT75_IDTight || HLT_IsoMu24 || HLT_Mu50 || HLT_Ele32_WPTight_Gsf || HLT_Ele115_CaloIdVT_GsfTrkIdT || HLT_Photon200 || DoubleMediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg || HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1) && nFatJet >=2 && Sum$(FatJet_particleNet_XbbVsQCD>0.1 && FatJet_mass*FatJet_ParticleNet_raw_masscorr>50)>0 && Sum$((FatJet_ParticleNet_raw_probHtt>0.1 || FatJet_ParticleNet_raw_probHtm>0.1 || FatJet_ParticleNet_raw_probHte>0.1) && FatJet_mass*FatJet_ParticleNet_raw_masscorr>30)>0 && Sum$(FatJet_pt>250)>0' -o /eos/cms/store/cmst3/group/hh/NanoAODskimmed/20250908_NanoAODv15_2018_skim_v2/data --json $CMSSW_BASE/src/PhysicsTools/NanoHRTTools/data/JSON/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt -n 40 --bi keep_and_drop_boostedtaus_hh.txt --bo keep_and_drop_boostedtaus_hh.txt -d custom_samples_hh/data_2018.yaml --condor-extras '+AccountingGroup = "group_u_CMST3.all"' -j jobs_20251029_2018_skim_v2_data
+python3 runPostProcessing.py -i /eos/cms/store/cmst3/group/hh/NanoAOD/20250725_v15/2018/data/ --cut '((HLT_AK8PFJet500 || HLT_PFJet500 || HLT_AK8PFJet420_TrimMass30 || HLT_AK8PFHT800_TrimMass50 || HLT_PFHT1050 || HLT_PFHT500_PFMET100_PFMHT100_IDTight || HLT_PFHT700_PFMET95_PFMHT95_IDTight || HLT_PFHT800_PFMET85_PFMHT85_IDTight || HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1 || HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET100 || HLT_IsoMu24 || HLT_Mu50 || HLT_Ele32_WPTight_Gsf || HLT_Ele115_CaloIdVT_GsfTrkIdT || HLT_Photon200) && nFatJet >= 2 && Sum$((FatJet_globalParT3_Xbb/(FatJet_globalParT3_Xbb+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1 && FatJet_mass*FatJet_globalParT3_massCorrX2p*(1.0-FatJet_rawFactor)>50))>0 && Sum$((FatJet_globalParT3_Xtauhtauh/(FatJet_globalParT3_Xtauhtauh+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1) || (FatJet_globalParT3_Xtauhtaum/(FatJet_globalParT3_Xtauhtaum+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1) || (FatJet_globalParT3_Xtauhtaue/(FatJet_globalParT3_Xtauhtaue+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1) && FatJet_mass*FatJet_globalParT3_massCorrGeneric*(1.0-FatJet_rawFactor)>20)>0 && Sum$(FatJet_pt>250)>0)' -o /eos/cms/store/cmst3/group/hh/NanoAODskimmed/20260320_NanoAODv15_skim_v4/data --json $CMSSW_BASE/src/PhysicsTools/NanoHRTTools/data/JSON/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt -n 40 --bi keep_and_drop_boostedtaus_hh.txt --bo keep_and_drop_boostedtaus_hh.txt -d custom_samples_hh/data_2018.yaml -j jobs_20260326_2018_skim_v4_data
 ```
 
 To skim 2018 MC:
 
 ```bash
-python3 runPostProcessing.py -i /eos/cms/store/cmst3/group/hh/NanoAOD/20250725_v15/2018/mc/ --cut '(HLT_AK8PFHT800_TrimMass50 || HLT_AK8PFJet400_TrimMass30 || HLT_AK8PFJet500 || HLT_PFJet500 || HLT_PFHT1050 || HLT_PFHT500_PFMET100_PFMHT100_IDTight || HLT_PFHT700_PFMET85_PFMHT85_IDTight || HLT_PFHT800_PFMET75_PFMHT75_IDTight || HLT_IsoMu24 || HLT_Mu50 || HLT_Ele32_WPTight_Gsf || HLT_Ele115_CaloIdVT_GsfTrkIdT  || HLT_Photon200 || HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg || HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1) && nFatJet >=2 && Sum$(FatJet_particleNet_XbbVsQCD>0.1 && FatJet_mass*FatJet_ParticleNet_raw_masscorr>50)>0 && Sum$((FatJet_ParticleNet_raw_probHtt>0.1 || FatJet_ParticleNet_raw_probHtm>0.1 || FatJet_ParticleNet_raw_probHte>0.1) && FatJet_mass*FatJet_ParticleNet_raw_masscorr>30)>0 && Sum$(FatJet_pt>250)>0' -o /eos/cms/store/cmst3/group/hh/NanoAODskimmed/20251029_NanoAODv15_2018_skim_v2/mc -n 40 --bi keep_and_drop_boostedtaus_hh.txt --bo keep_and_drop_boostedtaus_hh.txt -d custom_samples_hh/mc_2018.yaml -j jobs_20251029_2018_skim_v2_mc
+python3 runPostProcessing.py -i /eos/cms/store/cmst3/group/hh/NanoAOD/20250725_v15/2018/mc/ --cut '((HLT_AK8PFJet500 || HLT_PFJet500 || HLT_AK8PFJet420_TrimMass30 || HLT_AK8PFHT800_TrimMass50 || HLT_PFHT1050 || HLT_PFHT500_PFMET100_PFMHT100_IDTight || HLT_PFHT700_PFMET95_PFMHT95_IDTight || HLT_PFHT800_PFMET85_PFMHT85_IDTight || HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1 || HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET100 || HLT_IsoMu24 || HLT_Mu50 || HLT_Ele32_WPTight_Gsf || HLT_Ele115_CaloIdVT_GsfTrkIdT || HLT_Photon200) && nFatJet >= 2 && Sum$((FatJet_globalParT3_Xbb/(FatJet_globalParT3_Xbb+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1 && FatJet_mass*FatJet_globalParT3_massCorrX2p*(1.0-FatJet_rawFactor)>50))>0 && Sum$((FatJet_globalParT3_Xtauhtauh/(FatJet_globalParT3_Xtauhtauh+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1) || (FatJet_globalParT3_Xtauhtaum/(FatJet_globalParT3_Xtauhtaum+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1) || (FatJet_globalParT3_Xtauhtaue/(FatJet_globalParT3_Xtauhtaue+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1) && FatJet_mass*FatJet_globalParT3_massCorrGeneric*(1.0-FatJet_rawFactor)>20)>0 && Sum$(FatJet_pt>250)>0)' -o /eos/cms/store/cmst3/group/hh/NanoAODskimmed/20260320_NanoAODv15_skim_v4/mc -n 40 --bi keep_and_drop_boostedtaus_hh.txt --bo keep_and_drop_boostedtaus_hh.txt -d custom_samples_hh/mc_2018.yaml -j jobs_20260326_2018_skim_v4_mc
 ```
 
-For 2016, use this trigger list instead:
+For 2016pre, use this trigger list instead:
 
 ```bash
-(HLT_AK8PFHT700_TrimR0p1PT0p03Mass50 || HLT_PFHT900 || HLT_AK8PFJet360_TrimMass30 || HLT_AK8PFJet450 || HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg || HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90 || HLT_VLooseIsoPFTau140_Trk50_eta2p1 ||  HLT_IsoMu24 || HLT_Mu50 or HLT_Ele32_eta2p1_WPTight_Gs || HLT_Ele115_CaloIdVT_GsfTrkIdT || HLT_Photon175)
+(HLT_AK8PFHT700_TrimR0p1PT0p03Mass50 || HLT_PFHT900 || HLT_AK8PFJet360_TrimMass30 || HLT_AK8PFJet450 || HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg || HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90 || HLT_VLooseIsoPFTau140_Trk50_eta2p1 || HLT_IsoMu24 || HLT_Mu50 || HLT_Ele27_WPTight_Gsf || HLT_Ele115_CaloIdVT_GsfTrkIdT)
+```
+
+For 2016post, use this trigger list instead:
+
+```bash
+(HLT_AK8PFHT700_TrimR0p1PT0p03Mass50 || HLT_PFHT900 || HLT_AK8PFJet360_TrimMass30 || HLT_AK8PFJet450 || HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90 || HLT_VLooseIsoPFTau140_Trk50_eta2p1 || HLT_IsoMu24 || HLT_Mu50 || HLT_Ele27_WPTight_Gsf || HLT_Ele115_CaloIdVT_GsfTrkIdT)
 ```
 
 For 2017, use this trigger list instead:
 
 ```bash
-HLT_AK8PFJet500 or HLT_PFJet500 || HLT_PFHT1050 || HLT_PFHT500_PFMET100_PFMHT100_IDTight || HLT_PFHT700_PFMET95_PFMHT95_IDTight || HLT_PFHT800_PFMET85_PFMHT85_IDTight || HLT_MonoCentralPFJet80_PFMETNoMu120_PFMHTNoMu120_IDTight || HLT_PFMETNoMu120_PFMHTNoMu120_IDTight || HLT_PFMET120_PFMHT120_IDTight || HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1 || HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET100 || HLT_IsoMu27 || HLT_Mu50 || HLT_Ele35_WPTight_Gsf || HLT_Photon200)
+(HLT_AK8PFJet500 || HLT_PFJet500 || HLT_PFHT1050 || HLT_PFHT500_PFMET100_PFMHT100_IDTight || HLT_PFHT700_PFMET95_PFMHT95_IDTight || HLT_PFHT800_PFMET85_PFMHT85_IDTight || HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1 || HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET100 || HLT_IsoMu27 || HLT_Mu50 || HLT_Ele35_WPTight_Gsf)
 ```
 
 Remember to also update the input and output paths and the golden json for each year.
@@ -69,7 +75,7 @@ python3 runMerge.py -o [output-directory] -d [sample-list-yaml] -j [job-director
 For example, for 2018 data:
 
 ```bash
-python3 runMerge.py -o /eos/cms/store/cmst3/group/hh/NanoAODskimmed/20250908_NanoAODv15_2018_skim_v2/data -d custom_samples_hh/data_2018.yaml -j jobs_20251029_2018_skim_v2_data
+python3 runMerge.py -o /eos/cms/store/cmst3/group/hh/NanoAODskimmed/20260320_NanoAODv15_skim_v4/data -d custom_samples_hh/data_2018.yaml -j jobs_20260326_2018_skim_v4_data
 ```
 
 
