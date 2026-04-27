@@ -35,9 +35,8 @@ keep HLT_PFHT*
 keep HLT_*PFTau*
 keep HLT_*MET*
 
-# L1/TrigObj
+# L1
 dropmatch n?L1_.+
-dropmatch n?TrigObj_.+
 
 # GEN
 dropmatch n?GenDressedLepton_.+
