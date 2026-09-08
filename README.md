@@ -22,7 +22,7 @@ git clone https://github.com/slaurila/NanoHRT-tools.git PhysicsTools/NanoHRTTool
 scram b -j8
 ```
 
-### Skim
+### Run 2 skims
 
 ```bash
 cd PhysicsTools/NanoHRTTools/run
@@ -84,6 +84,29 @@ For example, for 2018 data:
 python3 runMerge.py -o /eos/cms/store/cmst3/group/hh/NanoAODskimmed/20260320_NanoAODv15_skim_v4/data -d custom_samples_hh/data_2018.yaml -j jobs_20260326_2018_skim_v4_data
 ```
 
+### Run 3 skims
+
+```bash
+cd PhysicsTools/NanoHRTTools/run
+```
+
+Use this command to submit the skimming jobs to condor:
+
+```bash
+python3 runPostProcessing.py -i [input-data-or-mc-dir-with-nanoaods] --cut [cutstring] -o [output-dir-on-eos] --json [lumi-json] -n [number-of-jobs] --bi [keep-and-drop-input-branch-list] --bo [keep-and-drop-output-branch-list] -d [yaml-file-with-input-sample-list] -j [jobs-directory-name]
+```
+
+For example, to run ANALYSIS SKIM for 2024 data with GloParT preselections:
+
+```bash
+python3 runPostProcessing.py --cut '(nFatJet >= 2 && Sum$(FatJet_mass*FatJet_globalParT3_massCorrGeneric*(1.0-FatJet_rawFactor)>20)>=2 && Sum$(FatJet_mass*FatJet_globalParT3_massCorrGeneric*(1.0-FatJet_rawFactor)>50)>=1 && Sum$(FatJet_globalParT3_Xbb/(FatJet_globalParT3_Xbb+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1)>0 && Sum$((FatJet_globalParT3_Xtauhtauh/(FatJet_globalParT3_Xtauhtauh+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1) || (FatJet_globalParT3_Xtauhtaum/(FatJet_globalParT3_Xtauhtaum+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1) || (FatJet_globalParT3_Xtauhtaue/(FatJet_globalParT3_Xtauhtaue+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1))>0 && Sum$(FatJet_pt>220)>0)' -o /eos/cms/store/cmst3/group/hh/NanoAODskimmedRun3/20260505_skim2024_v2/data --json $CMSSW_BASE/src/PhysicsTools/NanoHRTTools/data/JSON/Cert_Collisions2024_378981_386951_Golden.json -n 15 --bi keep_and_drop_boostedtaus_hh_run3.txt --bo keep_and_drop_boostedtaus_hh_run3.txt -d custom_samples_hh/data_2024.yaml -j jobs_20260505_skim2024_v2a_data
+```
+
+To run ANALYSIS SKIM for 2024 MC:
+
+```bash
+python3 runPostProcessing.py --cut '(nFatJet >= 2 && Sum$(FatJet_mass*FatJet_globalParT3_massCorrGeneric*(1.0-FatJet_rawFactor)>20)>=2 && Sum$(FatJet_mass*FatJet_globalParT3_massCorrGeneric*(1.0-FatJet_rawFactor)>50)>=1 && Sum$(FatJet_globalParT3_Xbb/(FatJet_globalParT3_Xbb+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1)>0 && Sum$((FatJet_globalParT3_Xtauhtauh/(FatJet_globalParT3_Xtauhtauh+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1) || (FatJet_globalParT3_Xtauhtaum/(FatJet_globalParT3_Xtauhtaum+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1) || (FatJet_globalParT3_Xtauhtaue/(FatJet_globalParT3_Xtauhtaue+FatJet_globalParT3_QCD+FatJet_globalParT3_TopbWev+FatJet_globalParT3_TopbWmv+FatJet_globalParT3_TopbWq+FatJet_globalParT3_TopbWqq+FatJet_globalParT3_TopbWtauhv+FatJet_globalParT3_Xcs+FatJet_globalParT3_Xqq)>0.1))>0 && Sum$(FatJet_pt>220)>0)' -o /eos/cms/store/cmst3/group/hh/NanoAODskimmedRun3/20260505_skim2024_v2/mc -n 25 --bi keep_and_drop_boostedtaus_hh_run3.txt --bo keep_and_drop_boostedtaus_hh_run3.txt -d custom_samples_hh/mc_2024.yaml -j jobs_20260505_skim2024_v2a_mc
+```
 
 
 # Generic isntructions
