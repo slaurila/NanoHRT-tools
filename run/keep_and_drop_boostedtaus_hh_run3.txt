@@ -1,0 +1,26 @@
+# PFCands
+dropmatch n?PFCands_.+
+
+# objects
+dropmatch n?BeamSpot_.+
+dropmatch n?CaloMET_.+
+dropmatch n?FiducialMET_.+
+dropmatch n?FsrPhoton_.+
+dropmatch n?Proton_.+
+dropmatch n?LowPtElectron_.+
+dropmatch n?ScoutingCaloMuonOutput_.+
+dropmatch n?ScoutingPFOutput_.+
+dropmatch n?SoftActivity.+
+dropmatch n?IsoTrack_.+
+
+# HLT
+keep HLT*
+
+# GEN
+dropmatch n?GenDressedLepton_.+
+dropmatch n?GenIsolatedLepton_.+
+dropmatch n?LHE_.+
+dropmatch n?Generator_.+
+dropmatch n?LHEReweightingWeight
+dropmatch n?HTXS_.+
+dropmatch n?GenIsolatedPhoton_.+
